@@ -1,0 +1,57 @@
+name: Hossam State Kill Switch
+
+on:
+  workflow_dispatch:
+    inputs:
+      enabled:
+        description: "Set app state"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+      message:
+        description: "Message shown when the app is disabled"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  toggle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update kill switch
+        env:
+          ENABLED: ${{ inputs.enabled }}
+          MESSAGE: ${{ inputs.message }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          enabled = os.environ["ENABLED"].lower() == "true"
+          message = os.environ.get("MESSAGE", "")
+
+          with open("kill_switch.json", "r", encoding="utf-8") as f:
+              data = json.load(f)
+
+          data["enabled"] = enabled
+          data["message"] = message
+          data["version"] = int(data.get("version", 0)) + 1
+
+          with open("kill_switch.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          PY
+
+      - name: Commit state
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "Update Hossam State Kill Switch"
+          file_pattern: kill_switch.json
