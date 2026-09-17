@@ -1,5 +1,5 @@
 {
-  "enabled": false,
-  "message": "تم ايقاف هذه النسخة قم بالتوجه الى ديسكورد لتحميل النسخة الجديدة",
-  "version": 3
+  "enabled": true,
+  "message": "",
+  "version": 4
 }
