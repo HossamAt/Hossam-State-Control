@@ -1,5 +1,5 @@
 {
-  "enabled": true,
-  "message": "سيتم الاتصال 🤍",
-  "version": 5
+  "enabled": false,
+  "message": "تم إيقاف هذه النسخة توجه الى مجتمع ديسكورد للحصول على النسخة الجديدة ",
+  "version": 6
 }
